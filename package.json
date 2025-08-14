@@ -5,5 +5,8 @@
   "scripts": {},
   "devDependencies": {
     "@playwright/test": "^1.54.2"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0"
   }
 }

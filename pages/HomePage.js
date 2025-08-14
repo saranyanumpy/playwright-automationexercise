@@ -1,28 +1,5 @@
-// const { test, expect } = require('@playwright/test');
-// const {BasePage}=require('./BasePage');
+const { expect } = require('@playwright/test');  // Import expect
 
-// test('Homepage loads correctly', async ({ page }) => {
-//   const  basepage =new BasePage(page);
-//   //await basepage.NavigationHistoryEntry('https://automationexercise.com/test_cases');
-//   await basepage.NavigationHistoryEntry('/test_cases');
-
-//   await expect(page).toHaveTitle(/Automation Exercise/);
-
-//   await expect(page).toHaveURL(url);
-
-//   const header=page.locator('header');
-//   await expect(header).toBeVisible();
-
-//   const footer=page.locator('footer');
-//   await expect(footer).toBeVisible();
-
-//   const logoLink=page.locator('a[href="/"] img');
-//   await expect(logoLink).toBeVisible();
-
-//   //const loadTime=await page.evaluate(() => performance.timing.l)
-
-// });
-// \
 class HomePage {
     constructor(page) {
         this.page = page;
@@ -31,21 +8,26 @@ class HomePage {
         this.logo = page.locator('a[href="/"] img');  // Locator for logo image
         this.header = page.locator('header');  // Locator for header
         this.footer = page.locator('footer');  // Locator for footer
+        this.signupButton = page.locator('a[href="/login"]');  // Locator for signup button
     }
 
     // Actions (methods to interact with the elements)
     async checkLogoVisibility() {
-        await this.logo.isVisible();  // Check if the logo is visible
+        await expect(this.logo).toBeVisible();  // Assert the logo is visible
     }
 
     async checkHeaderVisibility() {
-        await this.header.isVisible();  // Check if the header is visible
+        await expect(this.header).toBeVisible();  // Assert the header is visible
     }
 
     async checkFooterVisibility() {
-        await this.footer.isVisible();  // Check if the footer is visible
+        await expect(this.footer).toBeVisible();  // Assert the footer is visible
+    }
+
+    // Action to click the signup button
+    async clickSignUp() {
+        await this.signupButton.click();  // Click the signup button
     }
 }
 
 module.exports = { HomePage };
-
