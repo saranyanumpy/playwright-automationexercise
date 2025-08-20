@@ -158,6 +158,9 @@ class AccountInfoPage {
     this.zipCode = page.locator('#zipcode');
     this.mobileNumber = page.locator('#mobile_number');
     this.createAccount = page.locator('[data-qa="create-account"]');
+    this.continueButton = this.page.locator('a[data-qa="continue-button"]:visible').first();
+
+
   }
 
   async verifyPageTitle() {
@@ -248,8 +251,13 @@ class AccountInfoPage {
   }
 
 async submitCreateAccount() {
-  await this.page.pause();
+//  await this.page.pause();
   await this.createAccount.click();
 }
+
+  async clickContinueAfterSignup() {
+     await this.continueButton.click();
+     await this.page.waitForLoadState('load');
+  }
 }
 module.exports = { AccountInfoPage };
