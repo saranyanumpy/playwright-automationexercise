@@ -1,0 +1,50 @@
+trigger:
+  branches: [ master ]
+pr:
+  branches: [ master ]
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NODE_VERSION: '20.x'
+  PLAYWRIGHT_JUNIT_DIR: 'test-results'
+  PLAYWRIGHT_REPORT_DIR: 'playwright-report'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '$(NODE_VERSION)'
+    displayName: 'Use Node $(NODE_VERSION)'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npx playwright install --with-deps
+    displayName: 'Install Playwright browsers (Linux deps)'
+
+  - script: npx playwright test --reporter="list,junit,html" --output=$(PLAYWRIGHT_JUNIT_DIR)
+    displayName: 'Run Playwright tests'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish JUnit results to Tests tab'
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '$(PLAYWRIGHT_JUNIT_DIR)/**/*.xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      mergeTestResults: true
+      testRunTitle: 'Playwright Tests'
+    condition: succeededOrFailed()
+
+  - script: |
+      tar -czf $(PLAYWRIGHT_REPORT_DIR).tgz $(PLAYWRIGHT_REPORT_DIR) || true
+    displayName: 'Archive HTML report'
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish HTML report artifact'
+    inputs:
+      PathtoPublish: '$(PLAYWRIGHT_REPORT_DIR).tgz'
+      ArtifactName: 'playwright-report'
+      publishLocation: 'Container'
+    condition: succeededOrFailed()
