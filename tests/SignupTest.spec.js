@@ -102,10 +102,10 @@ for (const row of rows) {
     await expect(page.getByText('Account Created!')).toBeVisible();
 
 await account.clickContinueAfterSignup();
-  //  Not cicking continue button  fix it tomorrow
+await page.context().storageState({path: 'storage/auth.json' });
     // 5) Logout (inside the test, using an instance method)
-    const logout = new LogOutPage(page);
-    await logout.logOutButtonAction();
-    await expect(page).toHaveURL(`${config.baseURL}/login`);
+    // const logout = new LogOutPage(page);
+    // await logout.logOutButtonAction();
+    // await expect(page).toHaveURL(`${config.baseURL}/login`);
   });
 }

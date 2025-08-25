@@ -255,9 +255,13 @@ async submitCreateAccount() {
   await this.createAccount.click();
 }
 
-  async clickContinueAfterSignup() {
-     await this.continueButton.click();
-     await this.page.waitForLoadState('load');
-  }
+ async clickContinueAfterSignup() {
+  const continueBtn = this.page.locator('a[data-qa="continue-button"]');
+  await continueBtn.waitFor({ state: 'visible' });
+  await Promise.all([
+    this.page.waitForLoadState('domcontentloaded'),
+    continueBtn.click()
+  ]);
+}
 }
 module.exports = { AccountInfoPage };
