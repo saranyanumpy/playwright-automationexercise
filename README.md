@@ -1,52 +1,77 @@
-// playwright.config.js
-import { defineConfig } from '@playwright/test';
 
-export default defineConfig({
-  // 1. Test location
-  testDir: './tests',
+Playwright Automation Project – Automation Exercise
+Overview
 
-  // 2. Timeout for each test (in ms)
-  timeout: 30 * 1000, // 30 seconds
+This project automates the UI testing of automationexercise.com
+ using Playwright
 
-  // 3. Retry failed tests
-  retries: 1,
+It currently covers Signup, Login, and Account Management flows with data-driven testing and follows Page Object Model (POM) design for better maintainability.
 
-  // 4. Parallel execution control (optional for CI)
-  workers: process.env.CI ? 1 : undefined, // run 1 worker in CI
+🛠 Tech Stack
 
-  // 5. Common settings for all tests
-  use: {
-    baseURL: 'https://automationexercise.com',
-    headless: false,
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    trace: 'on-first-retry',
-    viewport: { width: 1280, height: 720 },
-  },
+Playwright – UI test automation
 
-  // 6. Cross-browser testing setup
-  projects: [
-    {
-      name: 'Chromium',
-      use: { browserName: 'chromium' },
-    },
-    {
-      name: 'Firefox',
-      use: { browserName: 'firefox' },
-    },
-    {
-      name: 'WebKit',
-      use: { browserName: 'webkit' },
-    },
-  ],
+JavaScript / Node.js
 
-  // 7. Reporter configuration
-  reporter: [
-    ['list'], // shows real-time log
-    ['html', { outputFolder: 'report', open: 'never' }],
-  ],
+CSV – test data input
 
-  // 8. Optional: Run only tests with specific tags
-  // To run: npx playwright test --grep @smoke
-  grep: process.env.GREP ? new RegExp(process.env.GREP) : undefined,
-});
+Page Object Model (POM) – clean test design
+
+Project Structure
+playwright-automationexercise/
+│── pages/            # Page Object classes (SignupPage, AccountInfoPage, LogOutPage, etc.)
+│── tests/            # Test specs (Signup, Login flows)
+│── utils/            # Utility files (CSV reader)
+│── config/           # Environment configs
+│── testdata/         # CSV files for test data
+│── playwright.config.js
+│── package.json
+
+ Features Implemented
+
+Signup flow with CSV-driven test data
+
+ Account Information Page automation (dropdowns, checkboxes, text fields)
+
+ Login & Logout flows
+
+ Auth test using storage state for faster login (avoiding repeated UI login)
+
+ Tests running in headed/headless modes
+
+ Debugging with page.pause()
+
+ Running Tests
+Install dependencies
+npm install
+
+Run all tests (headless by default)
+npx playwright test
+
+Run tests in headed mode
+npx playwright test --headed
+
+Run a specific test
+npx playwright test tests/SignupTest.spec.js
+
+Debug mode
+npx playwright test --debug
+
+Next Steps
+
+ Add negative test cases with screenshots
+
+ Implement parallel test execution
+
+ Run in multiple browsers (Chromium, Firefox, WebKit)
+
+ Integrate with CI/CD (GitHub Actions)
+
+ Add custom reporting (Allure / HTML reports)
+
+ Expand coverage to Cart, Checkout, and Orders modules
+
+Author
+
+Saranya Seenivasan – Aspiring SDET | Redmond, WA
+🔗 GitHub Projects
