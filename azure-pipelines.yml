@@ -1,7 +1,12 @@
 trigger:
-  branches: [ master ]
+  branches:
+    include:
+      - master
+
 pr:
-  branches: [ master ]
+  branches:
+    include:
+      - master
 
 pool:
   vmImage: 'ubuntu-latest'
